@@ -18,18 +18,26 @@ class AccountWidgetCore extends \WP_Widget {
 			'classname'   => 'WooComAW',
 			'description' => __( 'WooCom Account Widget shows order & account data', 'woocom-aw' ),
 		];
-		parent::__construct( 'WooComAW',
-		                     __( 'WooCom Account Widget', 'woocom-aw' ), $widget_ops );
+		parent::__construct(
+			'WooComAW',
+			__( 'WooCom Account Widget', 'woocom-aw' ), $widget_ops
+		);
 	}
 
 	/**
 	 * This method is responsible for showing the bbackend form for the Widget.
 	 *
 	 * @param array $instance
+	 * @return void
 	 */
 	public function form( $instance ) {
 
-		$instance         = wp_parse_args( (array) $instance, ['title' => ''] );
+		$instance         = wp_parse_args(
+			(array) $instance,
+			[
+				'title' => '',
+			]
+		);
 		$show_cartlink    = isset( $instance['show_cartlink'] ) ? (bool) $instance['show_cartlink'] : false;
 		$show_items       = isset( $instance['show_items'] ) ? (bool) $instance['show_items'] : false;
 		$show_upload      = isset( $instance['show_upload'] ) ? (bool) $instance['show_upload'] : false;
@@ -65,7 +73,7 @@ class AccountWidgetCore extends \WP_Widget {
 		$instance['login_with_email'] = ! empty( $new_instance['login_with_email'] ) ? 1 : 0;
 		$instance['woocom_aw_redirect']     = esc_attr( $new_instance['woocom_aw_redirect'] );
 
-		if ( (int) $instance['login_with_email'] === 1 ) {
+		if ( 1 === (int) $instance['login_with_email'] ) {
 			add_option( 'woocom_aw_login_with_email', $new_instance['login_with_email'] );
 		} else {
 			delete_option( 'woocom_aw_login_with_email' );
@@ -75,18 +83,21 @@ class AccountWidgetCore extends \WP_Widget {
 	}
 
 	/**
-	 * This method is the fornt end of the Widget.
+	 * This method is the front-end of the Widget.
 	 *
 	 * @param array $args
 	 * @param array $instance
+	 *
+	 * @return void
 	 */
 	public function widget( $args, $instance ) {
 
 		extract( $args, EXTR_SKIP );
 		global $woocommerce;
 
-		$logged_out_title = apply_filters( 'widget_title',
-		                                   empty( $instance['logged_out_title'] ) ? __( 'Customer Login', 'woocom-aw' )
+		$logged_out_title = apply_filters(
+			'widget_title',
+			empty( $instance['logged_out_title'] ) ? __( 'Customer Login', 'woocom-aw' )
 			                                   : $instance['logged_out_title'], $instance );
 		$logged_in_title = apply_filters(
 			'widget_title',
