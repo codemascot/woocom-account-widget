@@ -110,7 +110,7 @@ class AccountWidgetCore extends \WP_Widget {
 			$instance
 		);
 
-		echo esc_html( $args['before_widget'] );
+		echo $args['before_widget'];
 
 		$c            = ( isset( $instance['show_cartlink'] ) && $instance['show_cartlink'] ) ? '1' : '0';
 		$cart_page_id = get_option( 'woocommerce_cart_page_id' );
@@ -140,7 +140,7 @@ class AccountWidgetCore extends \WP_Widget {
 				$uname = $user->display_name;
 			}
 			if ( $logged_in_title ) {
-				echo esc_html( $args['before_title'] ) . sprintf( $logged_in_title, ucwords( $uname ) ) . esc_html( $args['after_title'] );
+				echo $args['before_title'] . sprintf( $logged_in_title, ucwords( $uname ) ) . $args['after_title'];
 			}
 
 			if ( $c ) {
@@ -388,7 +388,7 @@ class AccountWidgetCore extends \WP_Widget {
 			}
 		}
 		echo '</div>';
-		echo esc_html( $args['after_widget'] );
+		echo $args['after_widget'];
 	}
 	
 	/**
