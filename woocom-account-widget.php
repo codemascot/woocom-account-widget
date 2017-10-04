@@ -8,7 +8,7 @@
  * Author URI:  http://rnaby.github.io
  * Version:     1.0.0
  * License:     GPL
- * Text Domain: woocom-aw //woocom-account-widget
+ * Text Domain: woocom-account-widget
  */
 
 namespace TheDramatist\WooComAW;
@@ -36,12 +36,25 @@ function initialize() {
 						'woocom-account-widget'
 					);
 
-					printf( '<div class="%1$s"><p>%2$s</p></div>', $class, $message );
+					printf(
+						'<div class="%1$s"><p>%2$s</p></div>',
+						esc_attr( $class ),
+						esc_html( $message )
+					);
 				}
 			);
 
 			return;
 		}
+
+		/**
+		 * Loading translations.
+		 */
+		load_plugin_textdomain(
+			'woocom-account-widget',
+			true,
+			basename( dirname( __FILE__ ) ) . '/languages'
+		);
 
 		/**
 		 * Checking if vendor/autoload.php exists or not.
