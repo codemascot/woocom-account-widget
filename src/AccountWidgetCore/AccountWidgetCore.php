@@ -1,4 +1,4 @@
-<?php
+<?php # -*- coding: utf-8 -*-
 
 namespace TheDramatist\WooComAW\AccountWidgetCore;
 
@@ -116,6 +116,7 @@ class AccountWidgetCore extends \WP_Widget {
 				__( 'Customer Login', 'woocom-account-widget' ) : $instance['logged_out_title'],
 			$instance
 		);
+
 		$logged_in_title = apply_filters(
 			'widget_title',
 			/* translators: %s: The Widget title when user is logged in. */
