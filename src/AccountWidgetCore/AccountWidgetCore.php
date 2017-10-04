@@ -8,7 +8,7 @@ namespace TheDramatist\WooComAW\AccountWidgetCore;
  * @package TheDramatist\WooComAW\AccountWidgetCore
  */
 class AccountWidgetCore extends \WP_Widget {
-	
+
 	/**
 	 * AccountWidgetCore constructor.
 	 */
