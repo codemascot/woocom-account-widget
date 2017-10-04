@@ -21,16 +21,26 @@ class AccountWidgetCore extends \WP_Widget {
 				'woocom-account-widget'
 			),
 		];
+
 		parent::__construct(
-			'WooComAW',
-			__(
-				'WooCom Account Widget',
-				'woocom-account-widget'
+			apply_filters(
+				'woocom_aw_parent_construct_id_base',
+				'WooComAW'
 			),
-			$widget_ops
+			apply_filters(
+				'woocom_aw_parent_construct_name',
+				__(
+					'WooCom Account Widget',
+					'woocom-account-widget'
+				)
+			),
+			apply_filters(
+				'woocom_aw_parent_construct_options',
+				$widget_ops
+			)
 		);
 	}
-	
+
 	/**
 	 * This method is responsible for showing the bbackend form for the Widget
 	 *
@@ -56,11 +66,11 @@ class AccountWidgetCore extends \WP_Widget {
 
 		include 'Views/HtmlFormView.php';
 	}
-	
+
 	/**
-	 * This method is reponsible for updating the backend form of the widget
-	 * @param array $new_instanc
-	 * @param array $old_instanc
+	 * This method is responsible for updating the backend form of the widget
+	 * @param array $new_instance
+	 * @param array $old_instance
 	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
@@ -86,14 +96,18 @@ class AccountWidgetCore extends \WP_Widget {
 
 		return $instance;
 	}
-	
+
 	/**
 	 * This method is the front-end of the Widget
-	 * @param array $arg
-	 * @param array $instanc
+	 * @param array $args
+	 * @param array $instance
 	 * @return void
 	 */
 	public function widget( $args, $instance ) {
+
+		$args       = apply_filters( 'woocom_aw_args_filter', $args );
+		$instance   = apply_filters( 'woocom_aw_instance_filter', $instance );
+
 		global $woocommerce;
 
 		$logged_out_title = apply_filters(
@@ -111,6 +125,8 @@ class AccountWidgetCore extends \WP_Widget {
 		);
 
 		echo $args['before_widget'];
+
+		do_action( 'woocom_aw_below_before_widget' );
 
 		$c            = ( isset( $instance['show_cartlink'] ) && $instance['show_cartlink'] ) ? '1' : '0';
 		$cart_page_id = get_option( 'woocommerce_cart_page_id' );
@@ -140,14 +156,16 @@ class AccountWidgetCore extends \WP_Widget {
 				$uname = $user->display_name;
 			}
 			if ( $logged_in_title ) {
-				echo $args['before_title'] . sprintf( $logged_in_title, ucwords( $uname ) ) . $args['after_title'];
+				echo $args['before_title']
+					. sprintf( $logged_in_title, ucwords( $uname ) )
+					. $args['after_title'];
 			}
 
 			if ( $c ) {
 				echo '<p><a class="woocom-aw-button cart-link woocom-aw-cart-link" href="'
-					. esc_url_raw( get_permalink( $this->lang_id( $cart_page_id ) ) ) .
-					'" title="' . esc_html__( 'View your shopping cart', 'woocom-account-widget' ) .
-					'">' . esc_html__( 'View your shopping cart', 'woocom-account-widget' ) . '</a></p>';
+					. esc_url_raw( get_permalink( $this->lang_id( $cart_page_id ) ) ) .'" title="'
+					. esc_html__( 'View your shopping cart', 'woocom-account-widget' ) . '">'
+					. esc_html__( 'View your shopping cart', 'woocom-account-widget' ) . '</a></p>';
 			}
 
 			$notcompleted   = 0;
@@ -346,7 +364,7 @@ class AccountWidgetCore extends \WP_Widget {
 				'</p>';
 			}
 			// login form
-			$args = [
+			$args = apply_filters( 'woocom_aw_login_form_args_filter', [
 				'echo'           => true,
 				'form_id'        => 'woocom_aw_login_form',
 				'label_username' => __( 'Username', 'woocom-account-widget' ),
@@ -360,7 +378,7 @@ class AccountWidgetCore extends \WP_Widget {
 				'remember'       => true,
 				'value_username' => null,
 				'value_remember' => false,
-			];
+			] );
 
 			if (
 				isset( $instance['woocom_aw_redirect'] ) &&
@@ -369,28 +387,38 @@ class AccountWidgetCore extends \WP_Widget {
 				$args['redirect'] = get_permalink( $this->lang_id( $instance['woocom_aw_redirect'] ) );
 			}
 
+			do_action( 'woocom_aw_before_login_form' );
+
 			wp_login_form( $args );
+
+			do_action( 'woocom_aw_after_login_form' );
+
+			$lost_pass_url = apply_filters( 'woocom_aw_lost_pass_url', wp_lostpassword_url() );
+
 			echo '<a class="woocom-aw-link woocom-aw-lost-pass" href="'
-			. wp_lostpassword_url() . '">'
+			. esc_url_raw( $lost_pass_url ) . '">'
 			. esc_html__( 'Lost password?', 'woocom-account-widget' ) . '</a>';
 
 			if ( get_option( 'users_can_register' ) ) {
 				echo '<a class="woocom-aw-button woocom-aw-register-link register-link" href="'
-				. get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . '" title="'
+				. esc_url_raw( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) ) . '" title="'
 				. esc_html__( 'Register', 'woocom-account-widget' ) . '">'
 				. esc_html__( 'Register', 'woocom-account-widget' ) . '</a>';
 			}
 			if ( $c ) {
 				echo '<p><a class="woocom-aw-button woocom-aw-cart-link cart-link" href="'
-				. get_permalink( $this->lang_id( $cart_page_id ) ) . '" title="'
+				. esc_url_raw( get_permalink( $this->lang_id( $cart_page_id ) ) ) . '" title="'
 				. esc_html__( 'View your shopping cart', 'woocom-account-widget' ) . '">'
 				. esc_html__( 'View your shopping cart', 'woocom-account-widget' ) . '</a></p>';
 			}
 		}
 		echo '</div>';
+
+		do_action( 'woocom_aw_above_after_widget' );
+
 		echo $args['after_widget'];
 	}
-	
+
 	/**
 	 * Get language ID for WPM
 	 * @param $i
@@ -403,12 +431,12 @@ class AccountWidgetCore extends \WP_Widget {
 			return $id;
 		}
 	}
-	
+
 	/**
-	 * Get order data by Order objec
+	 * Get order data by Order object
 	 * Used for backward compatibility for WC < 3.
-	 * @param \WC_Order $orde
-	 * @param string $data Data to retreiv
+	 * @param \WC_Order $order
+	 * @param string $data Data to retrieve
 	 * @return mixed
 	 */
 	public function get_order_data( $order, $data ) {
