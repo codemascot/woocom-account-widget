@@ -8,7 +8,7 @@ namespace TheDramatist\WooComAW\AccountWidgetCore;
  * @package TheDramatist\WooComAW\AccountWidgetCore
  */
 class AccountWidgetCore extends \WP_Widget {
-
+	
 	/**
 	 * AccountWidgetCore constructor.
 	 */
@@ -16,16 +16,23 @@ class AccountWidgetCore extends \WP_Widget {
 
 		$widget_ops = [
 			'classname'   => 'WooComAW',
-			'description' => __( 'WooCom Account Widget shows order & account data', 'woocom-aw' ),
+			'description' => __(
+				'WooCom Account Widget shows order & account data',
+				'woocom-account-widget'
+			),
 		];
 		parent::__construct(
 			'WooComAW',
-			__( 'WooCom Account Widget', 'woocom-aw' ), $widget_ops
+			__(
+				'WooCom Account Widget',
+				'woocom-account-widget'
+			),
+			$widget_ops
 		);
 	}
-
+	
 	/**
-	 * This method is responsible for showing the bbackend form for the Widget.
+	 * This method is responsible for showing the bbackend form for the Widget
 	 *
 	 * @param array $instance
 	 * @return void
@@ -49,13 +56,11 @@ class AccountWidgetCore extends \WP_Widget {
 
 		include 'Views/HtmlFormView.php';
 	}
-
+	
 	/**
-	 * This method is reponsible for updating the backend form of the widget.
-	 *
-	 * @param array $new_instance
-	 * @param array $old_instance
-	 *
+	 * This method is reponsible for updating the backend form of the widget
+	 * @param array $new_instanc
+	 * @param array $old_instanc
 	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
@@ -81,31 +86,31 @@ class AccountWidgetCore extends \WP_Widget {
 
 		return $instance;
 	}
-
+	
 	/**
-	 * This method is the front-end of the Widget.
-	 *
-	 * @param array $args
-	 * @param array $instance
-	 *
+	 * This method is the front-end of the Widget
+	 * @param array $arg
+	 * @param array $instanc
 	 * @return void
 	 */
 	public function widget( $args, $instance ) {
-
-		extract( $args, EXTR_SKIP );
 		global $woocommerce;
 
 		$logged_out_title = apply_filters(
 			'widget_title',
-			empty( $instance['logged_out_title'] ) ? __( 'Customer Login', 'woocom-aw' )
-			                                   : $instance['logged_out_title'], $instance );
+			empty( $instance['logged_out_title'] ) ?
+				__( 'Customer Login', 'woocom-account-widget' ) : $instance['logged_out_title'],
+			$instance
+		);
 		$logged_in_title = apply_filters(
 			'widget_title',
 			/* translators: %s: The Widget title when user is logged in. */
-			empty( $instance['logged_in_title'] ) ? __( 'Welcome %s', 'woocom-aw' )
-				: $instance['logged_in_title'], $instance );
+			empty( $instance['logged_in_title'] ) ?
+				__( 'Welcome %s', 'woocom-account-widget' ) : $instance['logged_in_title'],
+			$instance
+		);
 
-		echo $before_widget;
+		echo esc_html( $args['before_widget'] );
 
 		$c            = ( isset( $instance['show_cartlink'] ) && $instance['show_cartlink'] ) ? '1' : '0';
 		$cart_page_id = get_option( 'woocommerce_cart_page_id' );
@@ -129,20 +134,20 @@ class AccountWidgetCore extends \WP_Widget {
 
 			$user = get_user_by( 'id', get_current_user_id() );
 			echo '<div class=login>';
-			if ( $user->first_name !== '' ) {
+			if ( '' !== $user->first_name ) {
 				$uname = $user->first_name;
 			} else {
 				$uname = $user->display_name;
 			}
 			if ( $logged_in_title ) {
-				echo $args['before_title'] . sprintf( $logged_in_title, ucwords( $uname ) ) . $args['after_title'];
+				echo esc_html( $args['before_title'] ) . sprintf( $logged_in_title, ucwords( $uname ) ) . esc_html( $args['after_title'] );
 			}
 
 			if ( $c ) {
 				echo '<p><a class="woocom-aw-button cart-link woocom-aw-cart-link" href="'
-				     . get_permalink( $this->lang_id( $cart_page_id ) ) .
-				     '" title="' . __( 'View your shopping cart', 'woocom-aw' ) .
-				     '">' . __( 'View your shopping cart', 'woocom-aw' ) . '</a></p>';
+					. esc_url_raw( get_permalink( $this->lang_id( $cart_page_id ) ) ) .
+					'" title="' . esc_html__( 'View your shopping cart', 'woocom-account-widget' ) .
+					'">' . esc_html__( 'View your shopping cart', 'woocom-account-widget' ) . '</a></p>';
 			}
 
 			$notcompleted   = 0;
@@ -183,8 +188,10 @@ class AccountWidgetCore extends \WP_Widget {
 						$order = wc_get_order( $customer_order->ID );
 					}
 
-					if ( $this->get_order_data( $order, 'status' ) !== 'completed'
-					     && $this->get_order_data( $order, 'status' ) !== 'cancelled' ) {
+					if (
+						'completed' !== $this->get_order_data( $order, 'status' ) &&
+						'cancelled' !== $this->get_order_data( $order, 'status' )
+					) {
 						$notcompleted ++;
 					}
 
@@ -245,60 +252,87 @@ class AccountWidgetCore extends \WP_Widget {
 
 			echo '<ul class="clearfix woocom-aw-list">';
 			if ( $it ) {
-				echo '<li class="woocom-aw-link item">
-						<a class="cart-contents-new" href="'
-				     . get_permalink( $this->lang_id( $cart_page_id ) ) . '" title="'
-				     . __( 'View your shopping cart', 'woocom-aw' ) . '"><span>'
-				     . $woocommerce->cart->cart_contents_count . '</span> '
-				     . _n( 'product in your shopping cart', 'products in your shopping cart',
-				           $woocommerce->cart->cart_contents_count, 'woocom-aw' ) . '
-						</a>
-					</li>';
+				echo '<li class="woocom-aw-link item"><a class="cart-contents-new" href="'
+					. esc_url_raw( get_permalink( $this->lang_id( $cart_page_id ) ) ) . '" title="'
+					. esc_html__( 'View your shopping cart', 'woocom-account-widget' ) . '"><span>'
+					. esc_html( $woocommerce->cart->cart_contents_count ) . '</span> '
+					. esc_html(
+						_n(
+							'product in your shopping cart',
+							'products in your shopping cart',
+							$woocommerce->cart->cart_contents_count,
+							'woocom-account-widget'
+						)
+					) . '</a></li>';
 			}
 			if ( $u && function_exists( 'woocommerce_umf_admin_menu' ) ) {
 
-				echo '<li class="woocom-aw-link upload">
-						<a href="' . get_permalink( $my_account_id ) . '" title="'
-				     . __( 'Upload files', 'woocom-aw' ) . '"><span>' . $uploadfile . '</span> '
-				     . _n( 'file to upload', 'files to upload', $uploadfile, 'woocom-aw' ) . '
-						</a>
-					</li>';
+				echo '<li class="woocom-aw-link upload"><a href="'
+					. esc_url_raw( get_permalink( $my_account_id ) ) . '" title="'
+					. esc_html__( 'Upload files', 'woocom-account-widget' ) . '"><span>'
+					. absint( $uploadfile ) . '</span> '
+					. esc_html(
+						_n(
+							'file to upload',
+							'files to upload',
+							$uploadfile,
+							'woocom-account-widget'
+						)
+					) . '</a></li>';
 			}
 			if ( $unew && class_exists( 'WPF_Uploads' ) ) {
 
-				echo '<li class="woocom-aw-link upload">
-						<a href="' . get_permalink( $my_account_id ) . '" title="'
-				     . __( 'Upload files', 'woocom-aw' ) . '"><span>' . $uploadfile_new . '</span> '
-				     . _n( 'file to upload', 'files to upload', $uploadfile_new, 'woocom-aw' ) . '
-						</a>
-					</li>';
+				echo '<li class="woocom-aw-link upload"><a href="'
+				. esc_url_raw( get_permalink( $my_account_id ) ) . '" title="'
+				. esc_html__( 'Upload files', 'woocom-account-widget' ) . '"><span>'
+				. absint( $uploadfile_new ) . '</span> '
+				. esc_html(
+					_n(
+						'file to upload',
+						'files to upload',
+						$uploadfile_new,
+						'woocom-account-widget'
+					)
+				) . '</a></li>';
 			}
 			if ( $up ) {
-				echo '<li class="woocom-aw-link paid">
-						<a href="' . get_permalink( $my_account_id ) . '" title="'
-				     . __( 'Pay orders', 'woocom-aw' ) . '"><span>' . $notpaid . '</span> '
-				     . _n( 'payment required', 'payments required', $notpaid, 'woocom-aw' ) . '
-						</a>
-					</li>';
+				echo '<li class="woocom-aw-link paid"><a href="'
+					. esc_url_raw( get_permalink( $my_account_id ) ) . '" title="'
+					. esc_html__( 'Pay orders', 'woocom-account-widget' ) . '"><span>'
+					. absint( $notpaid ) . '</span> '
+					. esc_html(
+						_n(
+							'payment required',
+							'payments required',
+							$notpaid,
+							'woocom-account-widget'
+						)
+					) . '</a></li>';
 			}
 			if ( $p ) {
-				echo '<li class="woocom-aw-link pending">
-						<a href="' . get_permalink( $my_account_id ) . '" title="'
-				     . __( 'View uncompleted orders', 'woocom-aw' ) . '"><span>' . $notcompleted . '</span> '
-				     . _n( 'order pending', 'orders pending', $notcompleted, 'woocom-aw' ) . '
-						</a>
-					</li>';
+				echo '<li class="woocom-aw-link pending"><a href="'
+				. esc_url_raw( get_permalink( $my_account_id ) ) . '" title="'
+				. esc_html__( 'View uncompleted orders', 'woocom-account-widget' ) . '"><span>'
+				. absint( $notcompleted ) . '</span> '
+				. esc_html(
+					_n(
+						'order pending',
+						'orders pending',
+						$notcompleted,
+						'woocom-account-widget'
+					)
+				) . '</a></li>';
 			}
 			echo '</ul>';
 			echo '<p><a class="woocom-aw-button woocom-aw-myaccount-link myaccount-link" href="'
-			     . get_permalink( $my_account_id ) . '" title="' .
-			     __( 'My Account', 'woocom-aw' ) . '">'
-			     . __( 'My Account', 'woocom-aw' ) . '</a></p>';
-			if ( $lo === 1 ) {
+			. esc_url_raw( get_permalink( $my_account_id ) ) . '" title="'
+			. esc_html__( 'My Account', 'woocom-account-widget' ) . '">'
+			. esc_html__( 'My Account', 'woocom-account-widget' ) . '</a></p>';
+			if ( 1 === $lo ) {
 				echo '<p><a class="woocom-aw-button woocom-aw-logout-link logout-link" href="'
-				     . wp_logout_url( $woo_aw_home ) .
-				     '" title="' . __( 'Log out', 'woocom-aw' ) .
-				     '">' . __( 'Log out', 'woocom-aw' ) . '</a></p>';
+				. wp_logout_url( $woo_aw_home ) . '" title="'
+				. esc_html__( 'Log out', 'woocom-account-widget' ) . '">'
+				. esc_html__( 'Log out', 'woocom-account-widget' ) . '</a></p>';
 			}
 		} else {
 			echo '<div class=logout>';
@@ -306,19 +340,19 @@ class AccountWidgetCore extends \WP_Widget {
 			if ( $logged_out_title ) {
 				echo $args['before_title'] . $logged_out_title . $args['after_title'];
 			}
-			if ( isset( $_GET['login'] ) && $_GET['login'] === 'failed' ) {
-				echo '<p class="woocom-aw-login-failed woocom-aw-error">';
-				_e( 'Login failed, please try again', 'woocom-aw' );
-				echo '</p>';
+			if ( isset( $_GET['login'] ) && 'failed' === $_GET['login'] ) {
+				echo '<p class="woocom-aw-login-failed woocom-aw-error">'
+				. esc_html__( 'Login failed, please try again', 'woocom-account-widget' ) .
+				'</p>';
 			}
 			// login form
 			$args = [
 				'echo'           => true,
 				'form_id'        => 'woocom_aw_login_form',
-				'label_username' => __( 'Username', 'woocom-aw' ),
-				'label_password' => __( 'Password', 'woocom-aw' ),
-				'label_remember' => __( 'Remember Me', 'woocom-aw' ),
-				'label_log_in'   => __( 'Log In', 'woocom-aw' ),
+				'label_username' => __( 'Username', 'woocom-account-widget' ),
+				'label_password' => __( 'Password', 'woocom-account-widget' ),
+				'label_remember' => __( 'Remember Me', 'woocom-account-widget' ),
+				'label_log_in'   => __( 'Log In', 'woocom-account-widget' ),
 				'id_username'    => 'user_login',
 				'id_password'    => 'user_pass',
 				'id_remember'    => 'rememberme',
@@ -328,60 +362,57 @@ class AccountWidgetCore extends \WP_Widget {
 				'value_remember' => false,
 			];
 
-			if ( isset( $instance['woocom_aw_redirect'] ) && $instance['woocom_aw_redirect'] !== '' ) {
+			if (
+				isset( $instance['woocom_aw_redirect'] ) &&
+				'' !== $instance['woocom_aw_redirect']
+			) {
 				$args['redirect'] = get_permalink( $this->lang_id( $instance['woocom_aw_redirect'] ) );
 			}
 
 			wp_login_form( $args );
 			echo '<a class="woocom-aw-link woocom-aw-lost-pass" href="'
-			     . wp_lostpassword_url() . '">' .
-			     __( 'Lost password?', 'woocom-aw' ) . '</a>';
+			. wp_lostpassword_url() . '">'
+			. esc_html__( 'Lost password?', 'woocom-account-widget' ) . '</a>';
 
 			if ( get_option( 'users_can_register' ) ) {
 				echo '<a class="woocom-aw-button woocom-aw-register-link register-link" href="'
-				     . get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) .
-				     '" title="'
-				     . __( 'Register', 'woocom-aw' ) . '">' . __( 'Register', 'woocom-aw' ) . '</a>';
+				. get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . '" title="'
+				. esc_html__( 'Register', 'woocom-account-widget' ) . '">'
+				. esc_html__( 'Register', 'woocom-account-widget' ) . '</a>';
 			}
 			if ( $c ) {
 				echo '<p><a class="woocom-aw-button woocom-aw-cart-link cart-link" href="'
-				     . get_permalink( $this->lang_id( $cart_page_id ) ) .
-				     '" title="'
-				     . __( 'View your shopping cart', 'woocom-aw' ) . '">' .
-				     __( 'View your shopping cart', 'woocom-aw' ) . '</a></p>';
+				. get_permalink( $this->lang_id( $cart_page_id ) ) . '" title="'
+				. esc_html__( 'View your shopping cart', 'woocom-account-widget' ) . '">'
+				. esc_html__( 'View your shopping cart', 'woocom-account-widget' ) . '</a></p>';
 			}
 		}
 		echo '</div>';
-		echo $after_widget;
+		echo esc_html( $args['after_widget'] );
 	}
-
+	
 	/**
-	 * Get language ID for WPML
-	 *
-	 * @param $id
-	 *
+	 * Get language ID for WPM
+	 * @param $i
 	 * @return mixed
 	 */
 	public function lang_id( $id ) {
-		if(function_exists('icl_object_id')) {
-			return icl_object_id($id,'page',true);
+		if ( function_exists( 'icl_object_id' ) ) {
+			return icl_object_id( $id, 'page', true );
 		} else {
 			return $id;
 		}
 	}
-
+	
 	/**
-	 * Get order data by Order object
-	 *
-	 * Used for backward compatibility for WC < 3.0
-	 * @param \WC_Order $order
-	 * @param string $data Data to retreive
-	 *
+	 * Get order data by Order objec
+	 * Used for backward compatibility for WC < 3.
+	 * @param \WC_Order $orde
+	 * @param string $data Data to retreiv
 	 * @return mixed
 	 */
 	public function get_order_data( $order, $data ) {
-		if( version_compare( WC_VERSION, '3.0', '<' ) ) {
-
+		if ( version_compare( WC_VERSION, '3.0', '<' ) ) {
 			switch ($data) {
 
 				case 'user_id':

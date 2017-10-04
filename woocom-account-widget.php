@@ -8,7 +8,7 @@
  * Author URI:  http://rnaby.github.io
  * Version:     1.0.0
  * License:     GPL
- * Text Domain: woocom-aw
+ * Text Domain: woocom-aw //woocom-account-widget
  */
 
 namespace TheDramatist\WooComAW;
@@ -33,7 +33,7 @@ function initialize() {
 					$class   = 'notice notice-error is-dismissible';
 					$message = __(
 						'You don\'t have <b>WooCommerce</b> activated. Please Activate <b>WooCommerce</b> and then try to activate again <b>WooCom Account Widget</b>.',
-						'woocom-aw'
+						'woocom-account-widget'
 					);
 
 					printf( '<div class="%1$s"><p>%2$s</p></div>', $class, $message );
