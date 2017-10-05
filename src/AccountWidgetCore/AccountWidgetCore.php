@@ -5,7 +5,9 @@ namespace TheDramatist\WooComAW\AccountWidgetCore;
 /**
  * Class AccountWidgetCore
  *
- * @package TheDramatist\WooComAW\AccountWidgetCore
+ * @author  Khan M Rashedun-Naby <naby88@gmail.com>
+ * @package woocom-account-widget
+ * @license https://www.gnu.org/licenses/gpl.txt GPL
  */
 class AccountWidgetCore extends \WP_Widget {
 
@@ -22,22 +24,13 @@ class AccountWidgetCore extends \WP_Widget {
 			),
 		];
 
+		$widget_id_base = 'WooComAW';
+		$widget_name    = __( 'WooCom Account Widget', 'woocom-account-widget' );
+
 		parent::__construct(
-			apply_filters(
-				'woocom_aw_parent_construct_id_base',
-				'WooComAW'
-			),
-			apply_filters(
-				'woocom_aw_parent_construct_name',
-				__(
-					'WooCom Account Widget',
-					'woocom-account-widget'
-				)
-			),
-			apply_filters(
-				'woocom_aw_parent_construct_options',
-				$widget_ops
-			)
+			apply_filters( 'woocom_aw_parent_construct_id_base', $widget_id_base ),
+			apply_filters( 'woocom_aw_parent_construct_name', $widget_name ),
+			apply_filters( 'woocom_aw_parent_construct_options', $widget_ops )
 		);
 	}
 
@@ -55,6 +48,7 @@ class AccountWidgetCore extends \WP_Widget {
 				'title' => '',
 			]
 		);
+
 		$show_cartlink    = isset( $instance['show_cartlink'] ) ? (bool) $instance['show_cartlink'] : false;
 		$show_items       = isset( $instance['show_items'] ) ? (bool) $instance['show_items'] : false;
 		$show_upload      = isset( $instance['show_upload'] ) ? (bool) $instance['show_upload'] : false;
@@ -119,8 +113,8 @@ class AccountWidgetCore extends \WP_Widget {
 
 		$logged_in_title = apply_filters(
 			'widget_title',
-			/* translators: %s: The Widget title when user is logged in. */
 			empty( $instance['logged_in_title'] ) ?
+				/* translators: %s: The Widget title when user is logged in. */
 				__( 'Welcome %s', 'woocom-account-widget' ) : $instance['logged_in_title'],
 			$instance
 		);
@@ -199,7 +193,7 @@ class AccountWidgetCore extends \WP_Widget {
 			}
 			if ( $customer_orders ) {
 				foreach ( $customer_orders as $customer_order ) :
-					$woocommerce1 = 0;
+
 					if ( version_compare( WOOCOMMERCE_VERSION, "2.2" ) < 0 ) {
 						$order = new \WC_Order();
 						$order->populate( $customer_order );
@@ -422,7 +416,9 @@ class AccountWidgetCore extends \WP_Widget {
 
 	/**
 	 * Get language ID for WPM
-	 * @param $i
+	 *
+	 * @param $id
+	 *
 	 * @return mixed
 	 */
 	public function lang_id( $id ) {
@@ -436,13 +432,15 @@ class AccountWidgetCore extends \WP_Widget {
 	/**
 	 * Get order data by Order object
 	 * Used for backward compatibility for WC < 3.
+	 *
 	 * @param \WC_Order $order
 	 * @param string $data Data to retrieve
-	 * @return mixed
+	 *
+	 * @return mixed | bool
 	 */
 	public function get_order_data( $order, $data ) {
 		if ( version_compare( WC_VERSION, '3.0', '<' ) ) {
-			switch ($data) {
+			switch ( $data ) {
 
 				case 'user_id':
 					return $order->user_id;
@@ -452,10 +450,9 @@ class AccountWidgetCore extends \WP_Widget {
 					return $order->status;
 
 			}
-
 		} else {
 
-			switch ($data) {
+			switch ( $data ) {
 
 				case 'user_id':
 					return $order->get_user_id();
@@ -465,8 +462,7 @@ class AccountWidgetCore extends \WP_Widget {
 					return $order->get_status();
 
 			}
-
 		}
-
+		return false;
 	}
 }

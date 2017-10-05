@@ -5,7 +5,9 @@ namespace TheDramatist\WooComAW\AccountWidgetInit;
 /**
  * Class AccountWidgetInit
  *
- * @package TheDramatist\WooComAW\AccountWidgetInit
+ * @author  Khan M Rashedun-Naby <naby88@gmail.com>
+ * @package woocom-account-widget
+ * @license https://www.gnu.org/licenses/gpl.txt GPL
  */
 class AccountWidgetInit {
 
