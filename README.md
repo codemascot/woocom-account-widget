@@ -1,4 +1,4 @@
-# WooCom Account Widget
+# WooCom Account Widget `1.0.0`
 
 This plugin provides a widget which will help user to login at widget as well as show various WooCommerce data in frontend. It is developed thinking about developers. Some filters and actions hook are provided to manipulate data regarding only this widget. That will help developers to modify the widget data as well as modify the data. lastly this plugin is developed following most of the rules for WordPress VIP coding standard and checked by PHPCodesniffer on PHPStorm. So you can trust on the coding structure of this plugin. This is actually a fork of this [WooCommerce My Account Widget](https://wordpress.org/plugins/woocommerce-my-account-widget/) plugin.
 
