@@ -6,13 +6,20 @@ namespace TheDramatist\WooComAW\AccountWidgetCore;
  * Class AccountWidgetCore
  *
  * @author  Khan M Rashedun-Naby <naby88@gmail.com>
+ * @link    http://rnaby.github.io/
+ *
+ * @since   1.0.0
+ *
  * @package woocom-account-widget
+ * @subpackage woocom-account-widget/AccountWidgetCore
  * @license https://www.gnu.org/licenses/gpl.txt GPL
  */
 class AccountWidgetCore extends \WP_Widget {
 
 	/**
 	 * AccountWidgetCore constructor.
+	 *
+	 * @since   1.0.0
 	 */
 	public function __construct() {
 
@@ -37,6 +44,7 @@ class AccountWidgetCore extends \WP_Widget {
 	/**
 	 * This method is responsible for showing the bbackend form for the Widget
 	 *
+	 * @since   1.0.0
 	 * @param array $instance
 	 * @return void
 	 */
@@ -63,6 +71,8 @@ class AccountWidgetCore extends \WP_Widget {
 
 	/**
 	 * This method is responsible for updating the backend form of the widget
+	 *
+	 * @since   1.0.0
 	 * @param array $new_instance
 	 * @param array $old_instance
 	 * @return array
@@ -93,6 +103,8 @@ class AccountWidgetCore extends \WP_Widget {
 
 	/**
 	 * This method is the front-end of the Widget
+	 *
+	 * @since   1.0.0
 	 * @param array $args
 	 * @param array $instance
 	 * @return void
@@ -343,7 +355,7 @@ class AccountWidgetCore extends \WP_Widget {
 			. esc_html__( 'My Account', 'woocom-account-widget' ) . '</a></p>';
 			if ( 1 === $lo ) {
 				echo '<p><a class="woocom-aw-button woocom-aw-logout-link logout-link" href="'
-				. wp_logout_url( $woo_aw_home ) . '" title="'
+				. esc_url_raw( wp_logout_url( $woo_aw_home ) ) . '" title="'
 				. esc_html__( 'Log out', 'woocom-account-widget' ) . '">'
 				. esc_html__( 'Log out', 'woocom-account-widget' ) . '</a></p>';
 			}
@@ -417,6 +429,7 @@ class AccountWidgetCore extends \WP_Widget {
 	/**
 	 * Get language ID for WPM
 	 *
+	 * @since   1.0.0
 	 * @param $id
 	 *
 	 * @return mixed
@@ -433,6 +446,7 @@ class AccountWidgetCore extends \WP_Widget {
 	 * Get order data by Order object
 	 * Used for backward compatibility for WC < 3.
 	 *
+	 * @since   1.0.0
 	 * @param \WC_Order $order
 	 * @param string $data Data to retrieve
 	 *

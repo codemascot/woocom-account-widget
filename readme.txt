@@ -1,36 +1,70 @@
-Filters
+=== WooCom Account Widget ===
+Contributors: rnaby
+Tags: woocommerce, widget, my-account, orders, user, login, logout,ecommerce
+Requires at least: 4.0.0
+Tested up to: 4.8
+Requires PHP: 5.6
+Stable tag: 1.0.0
+License: GPL
+License URI: https://www.gnu.org/licenses/gpl.txt
 
-woocom_aw_parent_construct_id_base
-widget parent construct ID base change
+This is widget for WooCommerce developed for specially for developers following WordPress VIP coding standard. Checked by PHPCodesniffer along with WordPress VIP Coding Standard.
 
-woocom_aw_parent_construct_name
-widget parent construct name change
+== Description ==
+This plugin provides a widget which will help user to login at widget as well as show various WooCommerce data in frontend. It is developed thinking about developers. Some filters and actions hook are provided to manipulate data regarding only this widget. That will help developers to modify the widget data as well as modify the data. lastly this plugin is developed following most of the rules for WordPress VIP coding standard and checked by PHPCodesniffer on PHPStorm. So you can trust on the coding structure of this plugin. This is actually a fork of this [WooCommerce My Account Widget](https://wordpress.org/plugins/woocommerce-my-account-widget/) plugin
 
-woocom_aw_parent_construct_options
-widget parent construct options
+== Installation ==
+1. Upload the plugin to `wp-content/plugins` directory
+2. Go to the plugins dashboard at backend to activate the plugin.
+3. After activation you\'ll find the widget at your widget area dashboard.
 
-woocom_aw_args_filter 
-widget args filter
+= Requirements =
+* WordPress 4.0
+* PHP >= 5.6
+* WooCommerce >= 2.0.0
 
-woocom_aw_instance_filter 
-widget instance filter
+= Features =
+*   Lots of filter and action hooks.
+*   Well documented code.
+*   Checked by PHPCodesniffer with WordPress VIP coding standard.
+*   Followed modern PHP development approach.
+*   Already translated to 14 languages.
 
-woocom_aw_login_form_args_filter
-login form arguments filter
+== Documentation ==
+Here are some documentation for the provided hooks in this plugin-
 
-woocom_aw_lost_pass_url
-lost password url filter
+= Filters =
 
-Actions
+* `woocom_aw_parent_construct_id_base` => Widget parent construct ID base filter hook.
 
-woocom_aw_before_login_form
-just before login form
+* `woocom_aw_parent_construct_name` => Widget parent construct name filter hook.
 
-woocom_aw_after_login_form
-just after login form
+* `woocom_aw_parent_construct_options` => Widget parent construct options filter hook.
 
-woocom_aw_below_before_widget
-just below $args['before_widget']
+* `woocom_aw_args_filter` => Widget args filter hook.
 
-woocom_aw_above_after_widget
-just above $args['after_widget']; 
+* `woocom_aw_instance_filter` => Widget instance filter hook.
+
+* `woocom_aw_login_form_args_filter` => Login form arguments filter hook.
+
+* `woocom_aw_lost_pass_url` => Lost password url filter hook.
+
+= Actions =
+
+* `woocom_aw_before_login_form` => Executes just before the login form.
+
+* `woocom_aw_after_login_form` => Executes just after login form
+
+* `woocom_aw_below_before_widget` => Executes just below the `$args['before_widget']`
+
+* `woocom_aw_above_after_widget` => Executes just above `$args['after_widget']`;
+
+I'm thinking about adding some more hooks to this plugin. If you have any idea please share through the forum.
+
+You can also contribute through this SVN repository of WordPress.org as well as you can contribute here at this **[GitHub](https://github.com/rnaby/woocom-account-widget)** repository also.(Right now the repository is private, when this plugin is authorized at WordPress.org repository I'll open the GitHub repository also)
+
+== Changelog ==
+
+= Version 1.0.0 =
+
+* Initial release
