@@ -76,10 +76,3 @@ This plugin is licensed under [GPL](https://www.gnu.org/licenses/gpl.txt).
 
 All feedback / bug reports / pull requests are welcome.
 
-
-## Changelog
-
-### Version 1.0.0
-
-* Initial release.
-
