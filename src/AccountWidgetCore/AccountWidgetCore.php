@@ -170,7 +170,7 @@ class AccountWidgetCore extends \WP_Widget {
 
 			if ( $c ) {
 				echo '<p><a class="woocom-aw-button cart-link woocom-aw-cart-link" href="'
-					. esc_url_raw( get_permalink( $this->lang_id( $cart_page_id ) ) ) .'" title="'
+					. esc_url_raw( get_permalink( $this->lang_id( $cart_page_id ) ) ) . '" title="'
 					. esc_html__( 'View your shopping cart', 'woocom-account-widget' ) . '">'
 					. esc_html__( 'View your shopping cart', 'woocom-account-widget' ) . '</a></p>';
 			}
