@@ -2,9 +2,9 @@
 
 /**
  * Plugin Name: WooCom Account Widget
- * Description: TODO: Describe what this package is all about
- * Plugin URI:  TODO
- * Author:      Khan M Rashedun-Naby
+ * Description: This widget is for WooCommerce, developed specially for developers, following **WordPress VIP** coding standard. Checked by PHPCodesniffer along with WordPress VIP Coding Standard.
+ * Plugin URI:  https://github.com/rnaby/woocom-account-widget
+ * Author:      TheDramatist
  * Author URI:  http://rnaby.github.io
  * Version:     1.0.0
  * License:     GPL
