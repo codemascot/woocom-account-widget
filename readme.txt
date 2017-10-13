@@ -13,11 +13,6 @@ This widget is for WooCommerce, developed specially for developers, following **
 == Description ==
 This plugin provides a widget which will help user to login at widget as well as show various WooCommerce data in frontend. It is developed thinking about developers. Some filters and actions hook are provided to manipulate data regarding only this widget. That will help developers to modify the widget as well as modify the widget data explicitly. Lastly this plugin is developed following most of the rules for **WordPress VIP** coding standard and checked by **PHPCodesniffer**. So you can trust on the coding structure of this plugin.
 
-== Installation ==
-1. Upload the plugin to `wp-content/plugins` directory
-2. Go to the **Plugins** menu at dashboard in backend to activate the **WooCom Account Widget** plugin.
-3. After activation you\'ll find the widget at your widget area dashboard.
-
 = Requirements =
 * WordPress 4.0
 * PHP >= 5.6
@@ -62,6 +57,11 @@ Here are some documentation for the provided hooks in this plugin-
 > I'm thinking about adding some more hooks to this plugin. If you have any idea please share through the forum or direct email me at ***naby88@gmail.com*** or at ***naby88@live.com***.
 
 You can also contribute through this SVN repository of WordPress.org as well as you can contribute here at this **[GitHub](https://github.com/rnaby/woocom-account-widget)** repository also.
+
+== Installation ==
+1. Upload the plugin to `wp-content/plugins` directory
+2. Go to the **Plugins** menu at dashboard in backend to activate the **WooCom Account Widget** plugin.
+3. After activation you\'ll find the widget at your widget area dashboard.
 
 == Changelog ==
 
