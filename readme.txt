@@ -65,6 +65,6 @@ You can also contribute through this SVN repository of WordPress.org as well as 
 
 == Changelog ==
 
-= [1.0.0] [2017-10-13] TheDramatist <naby88@gmail.com> =
+= Version 1.0.0 [2017-10-13] =
 
 * Initial release
